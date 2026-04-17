@@ -1,11 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Social Pulse</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{--bg:#0a0a0f;--surface:#13131a;--s2:#1c1c26;--s3:#242433;--b1:rgba(255,255,255,0.07);--b2:rgba(255,255,255,0.13);--text:#f0eff8;--muted:rgba(240,239,248,0.45);--dim:rgba(240,239,248,0.22);--accent:#7c6af7;--accent2:#a78bfa;--green:#34d399;--red:#f87171;--amber:#fbbf24;--blue:#60a5fa;--ig:#f77737;--tk:#69c9d0;--r:14px;--rsm:8px;--nav:64px;--tab:58px;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;--serif:'Georgia','Times New Roman',serif}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -58,19 +58,47 @@ html,body{height:100%;background:#0a0a0f!important;color:#f0eff8;font-family:var
 .ptag.ig{background:rgba(247,119,55,.15);color:var(--ig)}
 .ptag.tk{background:rgba(105,201,208,.15);color:var(--tk)}
 .chart-card{background:var(--surface);border:1px solid var(--b1);border-radius:var(--r);padding:16px;margin-bottom:20px}
+.chart-host{position:relative;min-height:220px}
+.chart-host svg{display:block;width:100%;height:220px;overflow:visible}
+.chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+.legend-item{display:inline-flex;align-items:center;gap:6px}
+.legend-swatch{width:10px;height:10px;border-radius:50%}
+.control-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.control-card{background:var(--surface);border:1px solid var(--b1);border-radius:var(--r);padding:16px}
+.control-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.control-value{font-family:var(--serif);font-size:26px;color:var(--text);line-height:1}
+.control-meta{font-size:12px;color:var(--dim);margin-top:6px}
+.history-stack{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.history-item{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--surface);border:1px solid var(--b1);border-radius:var(--r);padding:14px 16px}
+.history-main{display:flex;flex-direction:column;gap:3px}
+.history-date{font-size:13px;color:var(--text);font-weight:600}
+.history-sub{font-size:12px;color:var(--muted)}
+.history-metrics{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+.history-pill{font-size:12px;padding:5px 10px;border-radius:999px;background:var(--s3);color:var(--text)}
+.history-pill.up{background:rgba(52,211,153,.12);color:var(--green)}
+.history-pill.post{background:rgba(96,165,250,.12);color:var(--blue)}
 .ucard{background:var(--surface);border:1px solid var(--b1);border-radius:var(--r);padding:16px;margin-bottom:12px}
 .uhead{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .field{display:flex;flex-direction:column;gap:5px}
 .field label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 .field input{background:var(--s2);border:1px solid var(--b1);border-radius:var(--rsm);color:var(--text);font-family:var(--font);font-size:15px;font-weight:500;padding:10px 12px;width:100%;outline:none;transition:border-color .15s}
+.field select{background:var(--s2);border:1px solid var(--b1);border-radius:var(--rsm);color:var(--text);font-family:var(--font);font-size:15px;font-weight:500;padding:10px 12px;width:100%;outline:none;transition:border-color .15s}
 .field input:focus{border-color:var(--accent)}
+.field select:focus{border-color:var(--accent)}
 .field input::placeholder{color:var(--dim)}
+.field select option{background:var(--s2);color:var(--text)}
 .post-hint{font-size:12px;padding:8px 12px;border-radius:var(--rsm);margin-top:8px;display:flex;align-items:center;gap:6px;border:1px solid transparent}
 .post-hint.has-new{background:rgba(96,165,250,.08);color:var(--blue);border-color:rgba(96,165,250,.2)}
 .post-hint.no-new{background:var(--s3);color:var(--dim)}
 .post-hint.warn{background:rgba(248,113,113,.08);color:var(--red);border-color:rgba(248,113,113,.2)}
 .save-btn{width:100%;background:linear-gradient(135deg,var(--accent),#9f7aea);border:none;border-radius:var(--r);color:#fff;font-family:var(--font);font-size:15px;font-weight:600;padding:15px;cursor:pointer;margin-bottom:20px;transition:opacity .15s,transform .1s}
+.secondary-btn{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);color:var(--text);font-family:var(--font);font-size:14px;font-weight:600;padding:13px 15px;cursor:pointer;transition:border-color .15s,background .15s;margin-bottom:20px}
+.secondary-btn:hover,.secondary-btn:active{background:var(--s3);border-color:var(--b2)}
+.danger-btn{border:none;background:rgba(248,113,113,.12);color:var(--red);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0}
+.danger-btn:hover,.danger-btn:active{background:rgba(248,113,113,.2)}
+.mini-note{font-size:12px;color:var(--muted);margin-top:-8px;margin-bottom:16px}
+.stack{display:flex;flex-direction:column;gap:10px}
 .save-btn:active{opacity:.85;transform:scale(.99)}
 .toast{position:fixed;bottom:calc(var(--tab) + 16px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#041f12;font-size:13px;font-weight:600;padding:10px 20px;border-radius:30px;opacity:0;transition:all .3s;z-index:200;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -141,7 +169,7 @@ html,body{height:100%;background:#0a0a0f!important;color:#f0eff8;font-family:var
         <p class="sec-title">Crescimento de posts</p>
         <p class="sec-sub">Quantos posts novos foram publicados a cada atualização</p>
         <div class="chart-card" id="posts-chart-wrap">
-          <canvas id="posts-chart" role="img" aria-label="Posts novos por atualização" style="display:none"></canvas>
+          <div id="posts-chart" class="chart-host" role="img" aria-label="Posts novos por atualização"></div>
           <div id="posts-empty" class="empty">Faça sua primeira atualização para ver o ritmo de publicação</div>
         </div>
       </div>
@@ -149,9 +177,14 @@ html,body{height:100%;background:#0a0a0f!important;color:#f0eff8;font-family:var
         <p class="sec-title">Evolução de seguidores</p>
         <p class="sec-sub">Total consolidado por atualização</p>
         <div class="chart-card">
-          <canvas id="evo-chart" role="img" aria-label="Evolução de seguidores" style="display:none"></canvas>
+          <div id="evo-chart" class="chart-host" role="img" aria-label="Evolução de seguidores"></div>
           <div id="evo-empty" class="empty">Registre pelo menos 2 atualizações para ver o gráfico</div>
         </div>
+      </div>
+      <div class="sec">
+        <p class="sec-title">Controle recente</p>
+        <p class="sec-sub">Resumo das últimas atualizações salvas</p>
+        <div class="history-stack" id="history-list"></div>
       </div>
     </div>
     <!-- PERFIS -->
@@ -177,7 +210,7 @@ html,body{height:100%;background:#0a0a0f!important;color:#f0eff8;font-family:var
         <p class="sec-title">Detalhe por perfil</p>
         <div class="chips" id="post-chips"></div>
         <div class="chart-card" id="pd-wrap">
-          <canvas id="pd-chart" role="img" aria-label="Posts por perfil" style="display:none"></canvas>
+          <div id="pd-chart" class="chart-host" role="img" aria-label="Posts por perfil"></div>
           <div id="pd-empty" class="empty">Selecione um perfil acima</div>
         </div>
         <div id="pd-table" style="margin-bottom:20px"></div>
@@ -188,6 +221,21 @@ html,body{height:100%;background:#0a0a0f!important;color:#f0eff8;font-family:var
       <div class="sec">
         <p class="sec-title">Atualizar dados</p>
         <p class="sec-sub">Digite o total atual de posts — os novos são calculados automaticamente</p>
+        <div class="control-grid" id="control-board"></div>
+        <div class="chart-card">
+          <p class="sec-title" style="font-size:20px">Adicionar perfil</p>
+          <p class="sec-sub" style="margin-bottom:14px">Cadastre novos perfis para acompanhar seguidores, posts e curtidas</p>
+          <div class="frow">
+            <div class="field"><label>Nome</label><input type="text" id="new_name" placeholder="Ex.: Canal Oficial"></div>
+            <div class="field"><label>@ usuário</label><input type="text" id="new_handle" placeholder="@perfil"></div>
+            <div class="field"><label>Plataforma</label><select id="new_platform"><option value="instagram">Instagram</option><option value="tiktok">TikTok</option></select></div>
+            <div class="field"><label>Seguidores</label><input type="number" id="new_followers" placeholder="0"></div>
+            <div class="field"><label>Posts totais</label><input type="number" id="new_posts" placeholder="0"></div>
+            <div class="field"><label>Curtidas</label><input type="number" id="new_likes" placeholder="0"></div>
+          </div>
+          <div class="mini-note">Se um campo não existir para a plataforma, deixe em branco.</div>
+          <button class="secondary-btn" onclick="addProfile()">Adicionar perfil</button>
+        </div>
         <div id="update-forms"></div>
         <button class="save-btn" onclick="saveAll()">Salvar e registrar</button>
       </div>
@@ -232,17 +280,193 @@ const DEFAULTS=[
   {id:'imp_ig',name:'(Im)parcial BR',handle:'@imparcialbra',platform:'instagram',followers:2,posts:2,likes:null,color:'#94a3b8',initials:'IB'},
 ];
 const KEY='socialpulse_v3';
-function loadState(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);}catch(e){}return{profiles:DEFAULTS.map(p=>({...p,prev_followers:null,prev_posts:null,updated_at:null})),history:[],profileHistory:{}};}
+const DRAFT_KEY='socialpulse_v3_drafts';
+const PROFILE_COLORS=['#f77737','#69c9d0','#a78bfa','#34d399','#fbbf24','#f472b6','#94a3b8','#fb7185','#38bdf8','#22c55e'];
+function makeBaselineState(){
+  const now=new Date().toISOString();
+  const profiles=DEFAULTS.map(p=>({...p,prev_followers:null,prev_posts:null,updated_at:null}));
+  return{
+    profiles,
+    history:[{date:now,total_followers:profiles.reduce((s,p)=>s+(p.followers||0),0),total_posts:profiles.filter(p=>p.posts!=null).reduce((s,p)=>s+(p.posts||0),0)}],
+    profileHistory:profiles.reduce((acc,p)=>{
+      acc[p.id]=[{date:now,followers:p.followers,posts:p.posts,new_posts:0}];
+      return acc;
+    },{})
+  };
+}
+function normalizeState(raw){
+  if(!raw||!Array.isArray(raw.profiles))return makeBaselineState();
+  const now=new Date().toISOString();
+  const mergedDefaults=DEFAULTS.map(base=>{
+    const saved=raw.profiles.find(p=>p.id===base.id)||{};
+    return{
+      ...base,
+      ...saved,
+      prev_followers:saved.prev_followers??null,
+      prev_posts:saved.prev_posts??null,
+      updated_at:saved.updated_at??null
+    };
+  });
+  const customProfiles=raw.profiles.filter(p=>!DEFAULTS.some(base=>base.id===p.id)).map(p=>({
+    ...p,
+    prev_followers:p.prev_followers??null,
+    prev_posts:p.prev_posts??null,
+    updated_at:p.updated_at??null,
+    color:p.color||pickColor(p.id),
+    initials:p.initials||makeInitials(p.name||p.handle||'PF')
+  }));
+  const profiles=[...mergedDefaults,...customProfiles];
+  const history=Array.isArray(raw.history)?raw.history.filter(x=>x&&x.date):[];
+  const profileHistory=raw.profileHistory&&typeof raw.profileHistory==='object'?raw.profileHistory:{};
+  if(history.length===0){
+    history.push({date:now,total_followers:profiles.reduce((s,p)=>s+(p.followers||0),0),total_posts:profiles.filter(p=>p.posts!=null).reduce((s,p)=>s+(p.posts||0),0)});
+  }
+  profiles.forEach(p=>{
+    if(!Array.isArray(profileHistory[p.id])||profileHistory[p.id].length===0){
+      profileHistory[p.id]=[{date:history[0].date,followers:p.followers,posts:p.posts,new_posts:0}];
+    }
+  });
+  return{profiles,history,profileHistory};
+}
+function loadState(){try{const r=localStorage.getItem(KEY);if(r)return normalizeState(JSON.parse(r));}catch(e){}return makeBaselineState();}
 let S=loadState();
 function saveState(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function loadDrafts(){try{const r=localStorage.getItem(DRAFT_KEY);return r?JSON.parse(r):{updateForms:{},newProfile:{}};}catch(e){}return{updateForms:{},newProfile:{}};}
+let D=loadDrafts();
+function saveDrafts(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(D));}catch(e){}}
+function setUpdateDraft(profileId,field,value){
+  if(!D.updateForms[profileId])D.updateForms[profileId]={};
+  D.updateForms[profileId][field]=value;
+  saveDrafts();
+}
+function getUpdateDraft(profileId,field,fallback){
+  const row=D.updateForms[profileId];
+  return row&&row[field]!==undefined?row[field]:fallback;
+}
+function clearUpdateDrafts(){
+  D.updateForms={};
+  saveDrafts();
+}
+function setNewProfileDraft(field,value){
+  D.newProfile[field]=value;
+  saveDrafts();
+}
+function clearNewProfileDraft(){
+  D.newProfile={};
+  saveDrafts();
+}
+function makeInitials(name){return String(name).trim().split(/\s+/).filter(Boolean).slice(0,2).map(part=>part[0]).join('').toUpperCase()||'PF';}
+function slugify(text){return String(text).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'')||'perfil';}
+function pickColor(seed){let total=0;String(seed).split('').forEach(ch=>{total+=ch.charCodeAt(0);});return PROFILE_COLORS[total%PROFILE_COLORS.length];}
+function recalcHistoryTotals(){
+  S.history=S.history.map(entry=>{
+    const totals=S.profiles.reduce((acc,p)=>{
+      const rows=(S.profileHistory[p.id]||[]).filter(x=>new Date(x.date)<=new Date(entry.date));
+      const latest=rows[rows.length-1];
+      if(!latest)return acc;
+      acc.followers+=latest.followers!=null?latest.followers:0;
+      acc.posts+=latest.posts!=null?latest.posts:0;
+      return acc;
+    },{followers:0,posts:0});
+    return{...entry,total_followers:totals.followers,total_posts:totals.posts};
+  });
+}
 function fmt(n){if(n===null||n===undefined)return'—';n=Number(n);if(isNaN(n))return'—';if(n>=1e6)return(n/1e6).toFixed(1).replace('.0','')+'M';if(n>=1000)return(n/1000).toFixed(n>=10000?0:1).replace('.0','')+'K';return n.toLocaleString('pt-BR');}
 function trend(c,p){if(!p||c===p)return'<span class="tr fl">= Sem variação</span>';const d=c-p,pct=Math.abs((d/p)*100).toFixed(1);return d>0?`<span class="tr up">▲ +${fmt(d)} (${pct}%)</span>`:`<span class="tr dn">▼ ${fmt(Math.abs(d))} (${pct}%)</span>`;}
 function postDelta(c,p){if(p===null||p===undefined||c===null)return'';const d=c-p;return d>0?`<span class="pdelta new">✦ +${d} post${d>1?'s':''} novos</span>`:`<span class="pdelta zero">sem posts novos</span>`;}
 function relTime(iso){if(!iso)return'nunca';const m=Math.floor((Date.now()-new Date(iso))/60000);if(m<1)return'agora';if(m<60)return`há ${m}min`;const h=Math.floor(m/60);if(h<24)return`há ${h}h`;return`há ${Math.floor(h/24)}d`;}
 function df(iso){return new Date(iso).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'});}
 function ds(iso){return new Date(iso).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});}
+function getLatestDelta(){
+  if(S.history.length<2)return{followers:0,posts:0};
+  const last=S.history[S.history.length-1],prev=S.history[S.history.length-2];
+  return{followers:(last.total_followers||0)-(prev.total_followers||0),posts:(last.total_posts||0)-(prev.total_posts||0)};
+}
+function escapeXml(text){return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function svgShell(lines,legend){
+  return `${lines}<div class="chart-legend">${legend||''}</div>`;
+}
+function renderBarSvg(hostId,emptyId,labels,values,color,labelText){
+  const host=document.getElementById(hostId),empty=document.getElementById(emptyId);
+  if(!host||!empty)return;
+  if(!labels.length||!values.some(v=>v!==null&&v!==undefined)){
+    host.innerHTML='';
+    host.style.display='none';
+    empty.style.display='';
+    return;
+  }
+  host.style.display='';
+  empty.style.display='none';
+  const w=560,h=220,padL=36,padR=12,padT=18,padB=34;
+  const max=Math.max(...values,1);
+  const innerW=w-padL-padR,innerH=h-padT-padB;
+  const barW=innerW/values.length;
+  const bars=values.map((value,index)=>{
+    const height=(value/max)*innerH;
+    const x=padL+index*barW+8;
+    const y=padT+innerH-height;
+    return `<g><rect x="${x}" y="${y}" width="${Math.max(barW-16,10)}" height="${height}" rx="6" fill="${color}" opacity="0.75"></rect><text x="${x+Math.max(barW-16,10)/2}" y="${h-10}" text-anchor="middle" fill="rgba(240,239,248,0.45)" font-size="11">${escapeXml(labels[index])}</text><text x="${x+Math.max(barW-16,10)/2}" y="${Math.max(y-6,12)}" text-anchor="middle" fill="#f0eff8" font-size="11">${value}</text></g>`;
+  }).join('');
+  host.innerHTML=svgShell(`<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="${padL}" y1="${padT+innerH}" x2="${w-padR}" y2="${padT+innerH}" stroke="rgba(255,255,255,0.08)"></line>${bars}</svg>`,`<span class="legend-item"><span class="legend-swatch" style="background:${color}"></span>${labelText}</span>`);
+}
+function renderLineSvg(hostId,emptyId,labels,values,color,labelText){
+  const host=document.getElementById(hostId),empty=document.getElementById(emptyId);
+  if(!host||!empty)return;
+  if(values.length<2){
+    host.innerHTML='';
+    host.style.display='none';
+    empty.style.display='';
+    return;
+  }
+  host.style.display='';
+  empty.style.display='none';
+  const w=560,h=220,padL=42,padR=14,padT=20,padB=34;
+  const innerW=w-padL-padR,innerH=h-padT-padB;
+  const min=Math.min(...values),max=Math.max(...values);
+  const spread=Math.max(max-min,1);
+  const step=values.length===1?0:innerW/(values.length-1);
+  const points=values.map((value,index)=>{
+    const x=padL+index*step;
+    const y=padT+innerH-((value-min)/spread)*innerH;
+    return{x,y,value,label:labels[index]};
+  });
+  const line=points.map((p,i)=>`${i===0?'M':'L'} ${p.x} ${p.y}`).join(' ');
+  const area=`M ${points[0].x} ${padT+innerH} ${points.map((p,i)=>`${i===0?'L':'L'} ${p.x} ${p.y}`).join(' ')} L ${points[points.length-1].x} ${padT+innerH} Z`;
+  const nodes=points.map(p=>`<g><circle cx="${p.x}" cy="${p.y}" r="4" fill="${color}"></circle><text x="${p.x}" y="${h-10}" text-anchor="middle" fill="rgba(240,239,248,0.45)" font-size="11">${escapeXml(p.label)}</text></g>`).join('');
+  host.innerHTML=svgShell(`<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="${padL}" y1="${padT+innerH}" x2="${w-padR}" y2="${padT+innerH}" stroke="rgba(255,255,255,0.08)"></line><path d="${area}" fill="rgba(124,106,247,0.12)"></path><path d="${line}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>${nodes}</svg>`,`<span class="legend-item"><span class="legend-swatch" style="background:${color}"></span>${labelText}</span>`);
+}
+function renderComboSvg(hostId,emptyId,labels,bars,lineValues,color){
+  const host=document.getElementById(hostId),empty=document.getElementById(emptyId);
+  if(!host||!empty)return;
+  if(labels.length<2){
+    host.innerHTML='';
+    host.style.display='none';
+    empty.style.display='';
+    return;
+  }
+  host.style.display='';
+  empty.style.display='none';
+  const w=560,h=220,padL=38,padR=14,padT=18,padB=34;
+  const innerW=w-padL-padR,innerH=h-padT-padB;
+  const maxBar=Math.max(...bars,1);
+  const minLine=Math.min(...lineValues),maxLine=Math.max(...lineValues),spreadLine=Math.max(maxLine-minLine,1);
+  const barW=innerW/labels.length;
+  const barMarks=bars.map((value,index)=>{
+    const height=(value/maxBar)*innerH;
+    const x=padL+index*barW+8;
+    const y=padT+innerH-height;
+    return `<rect x="${x}" y="${y}" width="${Math.max(barW-16,10)}" height="${height}" rx="6" fill="${color}" opacity="0.35"></rect>`;
+  }).join('');
+  const points=lineValues.map((value,index)=>{
+    const x=padL+index*barW+barW/2;
+    const y=padT+innerH-((value-minLine)/spreadLine)*innerH;
+    return{x,y,label:labels[index]};
+  });
+  const path=points.map((p,i)=>`${i===0?'M':'L'} ${p.x} ${p.y}`).join(' ');
+  const labelsSvg=points.map(p=>`<text x="${p.x}" y="${h-10}" text-anchor="middle" fill="rgba(240,239,248,0.45)" font-size="11">${escapeXml(p.label)}</text><circle cx="${p.x}" cy="${p.y}" r="4" fill="${color}"></circle>`).join('');
+  host.innerHTML=svgShell(`<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="${padL}" y1="${padT+innerH}" x2="${w-padR}" y2="${padT+innerH}" stroke="rgba(255,255,255,0.08)"></line>${barMarks}<path d="${path}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>${labelsSvg}</svg>`,`<span class="legend-item"><span class="legend-swatch" style="background:${color};opacity:.45"></span>Posts novos</span><span class="legend-item"><span class="legend-swatch" style="background:${color}"></span>Total de posts</span>`);
+}
 function goPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('content-area').scrollTop=0;if(id==='update')renderForms();if(id==='posts')renderPostsPage();}
-var C={evo:null,posts:null,pd:null};
 function renderDash(){
   const ps=S.profiles;
   const totF=ps.reduce((s,p)=>s+(p.followers||0),0),prevF=ps.reduce((s,p)=>s+(p.prev_followers||0),0);
@@ -260,29 +484,35 @@ function renderDash(){
     <div class="plat-block tk"><div class="plat-icon">🎵</div><div class="plat-val">${fmt(tkF)}</div><div class="plat-lbl">Seguidores TK</div><div class="plat-count">${ps.filter(p=>p.platform==='tiktok').length} perfis</div></div>`;
   const last=ps.map(p=>p.updated_at).filter(Boolean).sort().reverse()[0];
   document.getElementById('last-upd-txt').textContent=last?`Última atualização ${relTime(last)}`:'Dados do registro inicial';
-  renderPostsChart();renderEvoChart();
+  renderPostsChart();renderEvoChart();renderHistoryList();
 }
 function renderPostsChart(){
-  const h=S.history,el=document.getElementById('posts-chart'),em=document.getElementById('posts-empty');
-  if(h.length<2){el.style.display='none';em.style.display='';return;}
-  em.style.display='none';el.style.display='';el.parentElement.style.height='220px';
+  const h=S.history;
   const labels=h.slice(1).map(x=>ds(x.date));
   const deltas=h.slice(1).map((x,i)=>Math.max(0,(x.total_posts||0)-(h[i].total_posts||0)));
-  if(C.posts)C.posts.destroy();
-  C.posts=new Chart(el,{type:'bar',data:{labels,datasets:[{label:'Posts novos',data:deltas,backgroundColor:'rgba(96,165,250,0.65)',borderColor:'#60a5fa',borderWidth:1,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`+${c.raw} posts novos`}}},scales:{x:{ticks:{color:'rgba(240,239,248,0.4)',font:{size:11}},grid:{display:false}},y:{ticks:{color:'rgba(240,239,248,0.4)',font:{size:11},stepSize:1},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+  renderBarSvg('posts-chart','posts-empty',labels,deltas,'#60a5fa','Posts novos por atualização');
 }
 function renderEvoChart(){
-  const h=S.history,el=document.getElementById('evo-chart'),em=document.getElementById('evo-empty');
-  if(h.length<2){el.style.display='none';em.style.display='';return;}
-  em.style.display='none';el.style.display='';el.parentElement.style.height='200px';
-  if(C.evo)C.evo.destroy();
-  C.evo=new Chart(el,{type:'line',data:{labels:h.map(x=>ds(x.date)),datasets:[{label:'Seguidores',data:h.map(x=>x.total_followers),borderColor:'#7c6af7',backgroundColor:'rgba(124,106,247,0.08)',pointBackgroundColor:'#7c6af7',pointRadius:4,tension:0.35,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'rgba(240,239,248,0.4)',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'}},y:{ticks:{color:'rgba(240,239,248,0.4)',font:{size:11},callback:v=>fmt(v)},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+  const h=S.history;
+  renderLineSvg('evo-chart','evo-empty',h.map(x=>ds(x.date)),h.map(x=>x.total_followers),'#7c6af7','Seguidores totais');
+}
+function renderHistoryList(){
+  const box=document.getElementById('history-list');
+  if(!box)return;
+  const rows=S.history.slice(-5).reverse().map((entry,index,arr)=>{
+    const originalIndex=S.history.length-1-index;
+    const prev=S.history[originalIndex-1];
+    const dF=prev?(entry.total_followers||0)-(prev.total_followers||0):0;
+    const dP=prev?(entry.total_posts||0)-(prev.total_posts||0):0;
+    return `<div class="history-item"><div class="history-main"><div class="history-date">${df(entry.date)}</div><div class="history-sub">${index===0?'Último registro salvo':'Registro anterior'}</div></div><div class="history-metrics"><span class="history-pill">${fmt(entry.total_followers)} seg.</span><span class="history-pill up">${dF>=0?'+':''}${fmt(dF)} seguidores</span><span class="history-pill post">${dP>=0?'+':''}${dP} posts</span></div></div>`;
+  }).join('');
+  box.innerHTML=rows||'<div class="empty">Nenhum histórico registrado ainda.</div>';
 }
 var pF='all';
 function renderProfiles(f){
   pF=f||pF;
   const ps=S.profiles.filter(p=>pF==='all'||p.platform===pF);
-  document.getElementById('profile-list').innerHTML=ps.map(p=>`
+  document.getElementById('profile-list').innerHTML=ps.length?ps.map(p=>`
     <div class="pcard" onclick="openDetail('${p.id}')">
       <div class="av" style="background:${p.color}22;color:${p.color}">${p.initials}</div>
       <div class="pinfo">
@@ -296,12 +526,21 @@ function renderProfiles(f){
         ${p.posts!=null?postDelta(p.posts,p.prev_posts):''}
       </div>
       <span class="ptag ${p.platform==='instagram'?'ig':'tk'}">${p.platform==='instagram'?'IG':'TK'}</span>
-    </div>`).join('');
+    </div>`).join(''):'<div class="empty">Nenhum perfil neste filtro.</div>';
 }
 function filterProfiles(f,btn){document.querySelectorAll('.chips .chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');renderProfiles(f);}
 var selP=null;
 function renderPostsPage(){
   const ps=S.profiles.filter(p=>p.posts!=null);
+  if(ps.length===0){
+    document.getElementById('activity-list').innerHTML='<div class="empty">Nenhum perfil com posts cadastrado.</div>';
+    document.getElementById('post-chips').innerHTML='';
+    document.getElementById('pd-chart').style.display='none';
+    document.getElementById('pd-empty').style.display='';
+    document.getElementById('pd-empty').textContent='Cadastre um perfil com posts para ver o gráfico.';
+    document.getElementById('pd-table').innerHTML='';
+    return;
+  }
   const maxP=Math.max(...ps.map(p=>p.posts||0),1);
   const wa=ps.map(p=>{
     const h=(S.profileHistory[p.id]||[]);
@@ -336,16 +575,7 @@ function renderPostDetail(id){
   const h=(S.profileHistory[id]||[]);
   const el=document.getElementById('pd-chart'),em=document.getElementById('pd-empty'),tbl=document.getElementById('pd-table');
   if(h.length<2){el.style.display='none';em.style.display='';em.textContent=`${p.name} ainda não tem histórico suficiente.`;tbl.innerHTML='';return;}
-  el.style.display='';em.style.display='';em.style.display='none';el.parentElement.style.height='220px';
-  if(C.pd)C.pd.destroy();
-  C.pd=new Chart(el,{type:'bar',data:{labels:h.map(x=>ds(x.date)),datasets:[
-    {type:'line',label:'Total posts',data:h.map(x=>x.posts),borderColor:p.color,backgroundColor:'transparent',pointBackgroundColor:p.color,pointRadius:4,tension:0.3,yAxisID:'y2'},
-    {type:'bar',label:'Posts novos',data:h.map(x=>x.new_posts||0),backgroundColor:p.color+'55',borderColor:p.color,borderWidth:1,borderRadius:4,yAxisID:'y'}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
-    x:{ticks:{color:'rgba(240,239,248,0.4)',font:{size:11}},grid:{display:false}},
-    y:{position:'left',title:{display:true,text:'novos',color:'rgba(240,239,248,0.3)',font:{size:10}},ticks:{color:'rgba(240,239,248,0.35)',font:{size:10},stepSize:1},grid:{color:'rgba(255,255,255,0.04)'}},
-    y2:{position:'right',title:{display:true,text:'total',color:'rgba(240,239,248,0.3)',font:{size:10}},ticks:{color:'rgba(240,239,248,0.35)',font:{size:10}},grid:{display:false}}
-  }}});
+  renderComboSvg('pd-chart','pd-empty',h.map(x=>ds(x.date)),h.map(x=>x.new_posts||0),h.map(x=>x.posts||0),p.color);
   const rows=[...h].reverse().map(x=>{const np=x.new_posts||0;return`<tr><td>${df(x.date)}</td><td>${fmt(x.posts)}</td><td>${np>0?`<b style="color:var(--blue)">+${np}</b>`:`<span style="color:var(--dim)">—</span>`}</td><td>${fmt(x.followers)}</td></tr>`;}).join('');
   tbl.innerHTML=`<div class="chart-card" style="padding:0;overflow:hidden">
     <div style="padding:12px 16px;border-bottom:1px solid var(--b1);font-size:13px;font-weight:600;color:var(--text)">${p.name} — histórico</div>
@@ -355,19 +585,88 @@ function renderPostDetail(id){
     </table></div></div>`;
 }
 function renderForms(){
-  document.getElementById('update-forms').innerHTML=S.profiles.map(p=>`
+  const latestDelta=getLatestDelta();
+  document.getElementById('control-board').innerHTML=`
+    <div class="control-card"><div class="control-label">Seguidores na última atualização</div><div class="control-value">${latestDelta.followers>=0?'+':''}${fmt(latestDelta.followers)}</div><div class="control-meta">Total atual: ${fmt(S.profiles.reduce((s,p)=>s+(p.followers||0),0))}</div></div>
+    <div class="control-card"><div class="control-label">Posts na última atualização</div><div class="control-value">${latestDelta.posts>=0?'+':''}${latestDelta.posts}</div><div class="control-meta">Total atual: ${fmt(S.profiles.filter(p=>p.posts!=null).reduce((s,p)=>s+(p.posts||0),0))}</div></div>`;
+  document.getElementById('new_name').value=D.newProfile.name||'';
+  document.getElementById('new_handle').value=D.newProfile.handle||'';
+  document.getElementById('new_platform').value=D.newProfile.platform||'instagram';
+  document.getElementById('new_followers').value=D.newProfile.followers||'';
+  document.getElementById('new_posts').value=D.newProfile.posts||'';
+  document.getElementById('new_likes').value=D.newProfile.likes||'';
+  document.getElementById('update-forms').innerHTML=S.profiles.length?S.profiles.map(p=>`
     <div class="ucard">
       <div class="uhead">
         <div class="av" style="width:38px;height:38px;font-size:13px;background:${p.color}22;color:${p.color}">${p.initials}</div>
         <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">${p.name}</div><div style="font-size:12px;color:var(--muted)">${p.handle} · ${p.platform==='instagram'?'Instagram':'TikTok'}</div></div>
         <span class="ptag ${p.platform==='instagram'?'ig':'tk'}">${p.platform==='instagram'?'IG':'TK'}</span>
+        <button class="danger-btn" onclick="removeProfile('${p.id}')">Remover</button>
       </div>
       <div class="frow">
-        <div class="field"><label>Seguidores</label><input type="number" id="f_${p.id}_f" value="${p.followers||''}" placeholder="${fmt(p.followers)||'0'}"></div>
-        ${p.posts!=null?`<div class="field"><label>Posts totais</label><input type="number" id="f_${p.id}_p" value="${p.posts||''}" placeholder="${p.posts||'0'}" oninput="calcDelta('${p.id}')"></div>`:''}
-        ${p.likes!=null?`<div class="field"><label>Curtidas TK</label><input type="number" id="f_${p.id}_l" value="${p.likes||''}" placeholder="${fmt(p.likes)||'0'}"></div>`:''}
+        <div class="field"><label>Seguidores</label><input type="number" id="f_${p.id}_f" value="${getUpdateDraft(p.id,'followers',p.followers??'')}" placeholder="${fmt(p.followers)||'0'}" oninput="setUpdateDraft('${p.id}','followers',this.value)"></div>
+        ${p.posts!=null?`<div class="field"><label>Posts totais</label><input type="number" id="f_${p.id}_p" value="${getUpdateDraft(p.id,'posts',p.posts??'')}" placeholder="${p.posts||'0'}" oninput="setUpdateDraft('${p.id}','posts',this.value);calcDelta('${p.id}')"></div>`:''}
+        ${p.likes!=null?`<div class="field"><label>Curtidas TK</label><input type="number" id="f_${p.id}_l" value="${getUpdateDraft(p.id,'likes',p.likes??'')}" placeholder="${fmt(p.likes)||'0'}" oninput="setUpdateDraft('${p.id}','likes',this.value)"></div>`:''}
       </div>
-      ${p.posts!=null?`<div id="hint_${p.id}" class="post-hint no-new">Atual: <b>${p.posts}</b> posts — insira o novo total</div>`:''}`).join('');
+      ${p.posts!=null?`<div id="hint_${p.id}" class="post-hint no-new">Atual: <b>${p.posts}</b> posts — insira o novo total</div>`:''}
+    </div>`).join(''):'<div class="empty">Nenhum perfil cadastrado.</div>';
+  ['name','handle','platform','followers','posts','likes'].forEach(field=>{
+    const map={name:'new_name',handle:'new_handle',platform:'new_platform',followers:'new_followers',posts:'new_posts',likes:'new_likes'};
+    const el=document.getElementById(map[field]);
+    if(el)el.oninput=()=>setNewProfileDraft(field,el.value);
+    if(el&&el.tagName==='SELECT')el.onchange=()=>setNewProfileDraft(field,el.value);
+  });
+  S.profiles.filter(p=>p.posts!=null).forEach(p=>calcDelta(p.id));
+}
+function addProfile(){
+  const name=document.getElementById('new_name').value.trim();
+  const rawHandle=document.getElementById('new_handle').value.trim();
+  const platform=document.getElementById('new_platform').value;
+  const followersValue=document.getElementById('new_followers').value;
+  const postsValue=document.getElementById('new_posts').value;
+  const likesValue=document.getElementById('new_likes').value;
+  if(!name){showToast('Informe o nome do perfil');return;}
+  const handle=rawHandle?(rawHandle.startsWith('@')?rawHandle:'@'+rawHandle):'@'+slugify(name);
+  if(S.profiles.some(p=>p.handle.toLowerCase()===handle.toLowerCase())){showToast('Esse @ já está cadastrado');return;}
+  const id=`custom_${slugify(name)}_${Date.now().toString(36)}`;
+  const followers=followersValue===''?0:Math.max(0,parseInt(followersValue)||0);
+  const posts=postsValue===''?null:Math.max(0,parseInt(postsValue)||0);
+  const likes=likesValue===''?null:Math.max(0,parseInt(likesValue)||0);
+  const now=new Date().toISOString();
+  const profile={
+    id,
+    name,
+    handle,
+    platform,
+    followers,
+    posts,
+    likes,
+    color:pickColor(id),
+    initials:makeInitials(name),
+    prev_followers:null,
+    prev_posts:null,
+    updated_at:now
+  };
+  S.profiles.push(profile);
+  S.profileHistory[id]=[{date:now,followers,posts,new_posts:0}];
+  recalcHistoryTotals();
+  clearNewProfileDraft();
+  saveState();
+  renderDash();renderProfiles();renderForms();renderPostsPage();
+  showToast('Perfil adicionado com sucesso');
+}
+function removeProfile(id){
+  const profile=S.profiles.find(p=>p.id===id);
+  if(!profile)return;
+  if(!confirm(`Remover ${profile.name}? O histórico desse perfil será apagado.`))return;
+  S.profiles=S.profiles.filter(p=>p.id!==id);
+  delete S.profileHistory[id];
+  if(selP===id)selP=null;
+  recalcHistoryTotals();
+  saveState();
+  closeDetail();
+  renderDash();renderProfiles();renderForms();renderPostsPage();
+  showToast('Perfil removido');
 }
 function calcDelta(id){
   const p=S.profiles.find(x=>x.id===id);if(!p||p.posts===null)return;
@@ -381,6 +680,7 @@ function calcDelta(id){
 }
 function saveAll(){
   if(!S.profileHistory)S.profileHistory={};
+  const now=new Date().toISOString();
   S.profiles=S.profiles.map(p=>{
     const fe=document.getElementById(`f_${p.id}_f`),pe=document.getElementById(`f_${p.id}_p`),le=document.getElementById(`f_${p.id}_l`);
     const nF=fe&&fe.value!==''?parseInt(fe.value):p.followers;
@@ -388,15 +688,16 @@ function saveAll(){
     const nL=le&&le.value!==''?parseInt(le.value):p.likes;
     const nPosts=nP!=null&&p.posts!=null?Math.max(0,nP-p.posts):0;
     if(!S.profileHistory[p.id])S.profileHistory[p.id]=[];
-    S.profileHistory[p.id].push({date:new Date().toISOString(),followers:nF,posts:nP,new_posts:nPosts});
+    S.profileHistory[p.id].push({date:now,followers:nF,posts:nP,new_posts:nPosts});
     if(S.profileHistory[p.id].length>60)S.profileHistory[p.id]=S.profileHistory[p.id].slice(-60);
-    return{...p,prev_followers:nF!==p.followers?p.followers:p.prev_followers,prev_posts:nP!==p.posts?p.posts:p.prev_posts,followers:nF,posts:nP,likes:nL,updated_at:new Date().toISOString()};
+    return{...p,prev_followers:nF!==p.followers?p.followers:p.prev_followers,prev_posts:nP!==p.posts?p.posts:p.prev_posts,followers:nF,posts:nP,likes:nL,updated_at:now};
   });
   const tF=S.profiles.reduce((s,p)=>s+(p.followers||0),0);
   const tP=S.profiles.filter(p=>p.posts!=null).reduce((s,p)=>s+(p.posts||0),0);
-  S.history.push({date:new Date().toISOString(),total_followers:tF,total_posts:tP});
+  S.history.push({date:now,total_followers:tF,total_posts:tP});
   if(S.history.length>60)S.history=S.history.slice(-60);
-  saveState();renderDash();renderProfiles();selP=null;
+  clearUpdateDrafts();
+  saveState();renderDash();renderProfiles();renderForms();renderPostsPage();selP=null;
   showToast('Salvo! Posts rastreados com sucesso ✦');
 }
 function openDetail(id){
